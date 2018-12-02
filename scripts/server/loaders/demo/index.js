@@ -22,9 +22,11 @@ module.exports = function(content) {
     const resourcePath = this.resourcePath;
     const ext = path.extname(resourcePath);
     const name = path.basename(resourcePath, ext);
+
     const scripts = [
-        '/common.js',
-        `/${replaceExt(path.relative(cwd, this.resourcePath), '.js')}`
+        '../../../common.js',
+        `./${name}.js`
+        // `/${replaceExt(path.relative(cwd, this.resourcePath), '.js')}`
     ];
 
     this.addDependency(headerTplPath);

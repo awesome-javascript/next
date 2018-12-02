@@ -20,10 +20,11 @@ module.exports = function getWebpackConfig(options) {
     const indexPath = path.join(componentPath, lang === 'zh' ? 'index.md' : 'index.en-us.md');
     const demoPaths = glob.sync(path.join(componentPath, 'demo', '*.md'));
     const themePaths = glob.sync(path.resolve(componentPath, 'theme/**/*.jsx'));
-    const entry = getEntry([indexPath, ...demoPaths, ...themePaths]);
+    const entry = getEntry([indexPath, ...demoPaths, ...themePaths], componentName);
     config.entry = entry;
-
+    console.log(entry);
     config.output = {
+        path: `/Users/zhaoguoyan/github/pub/__html/${componentName}`,
         publicPath: '/',
         filename: '[name].js'
     };
@@ -111,7 +112,7 @@ module.exports = function getWebpackConfig(options) {
         }]
     });
 
-    config.plugins.unshift(new webpack.HotModuleReplacementPlugin());
+    // config.plugins.unshift(new webpack.HotModuleReplacementPlugin());
     config.plugins.push(new webpack.optimize.CommonsChunkPlugin({
         name: 'common',
         chunks: Object.keys(entry).filter(entryPath => !/docs\/[^/]+\/index\.((en-us)\.)?$/.test(entryPath))
@@ -126,10 +127,11 @@ module.exports = function getWebpackConfig(options) {
     return config;
 };
 
-function getEntry(entryPaths) {
+function getEntry(entryPaths, componentName) {
     const entry = entryPaths.reduce((ret, entryPath) => {
         const name = path.basename(entryPath, path.extname(entryPath));
-        const pathWithoutExt = path.join(path.dirname(entryPath), name);
+        let pathWithoutExt = path.join(path.dirname(entryPath), name);
+        pathWithoutExt = pathWithoutExt.replace(path.join(cwd, 'docs'), '');
         ret[pathWithoutExt] = [
             'react-dev-utils/webpackHotDevClient',
             entryPath

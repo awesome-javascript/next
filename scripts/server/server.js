@@ -71,46 +71,48 @@ function run(port) {
         }
     });
 
-    const url = `http://${host}:${port}/${componentName}`;
-    logger.warn(`Start server, listen to ${url}.`);
+    compiler.run(() => {});
 
-    const server = new WebpackDevServer(compiler, {
-        disableHostCheck: true,
-        hot: true,
-        quiet: true,
-        publicPath: config.publicPath,
-        before: app => {
-            app.use(getVariables({ cwd }));
-            app.use(rebuildScss({ cwd }));
-            app.use(changeLang());
-        }
-    });
+    // const url = `http://${host}:${port}/${componentName}`;
+    // logger.warn(`Start server, listen to ${url}.`);
 
-    if (host === '127.0.0.1') {
-        server.listen(port);
-    } else {
-        server.listen(port, host);
-    }
+    // const server = new WebpackDevServer(compiler, {
+    //     disableHostCheck: true,
+    //     hot: true,
+    //     quiet: true,
+    //     publicPath: config.publicPath,
+    //     before: app => {
+    //         app.use(getVariables({ cwd }));
+    //         app.use(rebuildScss({ cwd }));
+    //         app.use(changeLang());
+    //     }
+    // });
 
-    if (!silent) {
-        setTimeout(() => {
-            openBrowser(url);
+    // if (host === '127.0.0.1') {
+    //     server.listen(port);
+    // } else {
+    //     server.listen(port, host);
+    // }
 
-            const watcher = chokidar.watch(path.join(cwd, 'docs', componentName, 'demo', '*.md'), {
-                ignoreInitial: true
-            });
-            const handler = () => {
-                logger.warn('Demo md added or removed, try to restart server');
-                server.close();
-                watcher.close();
-                process.send('RESTART');
-            };
-            watcher.on('add', handler).on('unlink', handler);
+    // if (!silent) {
+    //     setTimeout(() => {
+    //         openBrowser(url);
 
-            event.on('CHANGE_LANG', lang => {
-                logger.warn('Change language, try to restart server');
-                process.send(`CHANGE_LANG=${lang}`);
-            });
-        }, 1000);
-    }
+    //         const watcher = chokidar.watch(path.join(cwd, 'docs', componentName, 'demo', '*.md'), {
+    //             ignoreInitial: true
+    //         });
+    //         const handler = () => {
+    //             logger.warn('Demo md added or removed, try to restart server');
+    //             server.close();
+    //             watcher.close();
+    //             process.send('RESTART');
+    //         };
+    //         watcher.on('add', handler).on('unlink', handler);
+
+    //         event.on('CHANGE_LANG', lang => {
+    //             logger.warn('Change language, try to restart server');
+    //             process.send(`CHANGE_LANG=${lang}`);
+    //         });
+    //     }, 1000);
+    // }
 }

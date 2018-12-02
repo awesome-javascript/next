@@ -13,6 +13,8 @@ module.exports = function(content) {
     const lang = options.lang;
     const resourcePath = this.resourcePath;
 
+    const ext = path.extname(resourcePath);
+    const name = path.basename(resourcePath, ext);
     this.addDependency(headerTplPath);
     this.addDependency(indexTplPath);
     this.addDependency(resourcePath);

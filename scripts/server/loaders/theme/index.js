@@ -12,11 +12,16 @@ module.exports = function(content) {
     const disableAnimation = options.disableAnimation;
     const componentName = options.componentName;
 
+    const resourcePath = this.resourcePath;
+    const ext = path.extname(resourcePath);
+    const name = path.basename(resourcePath, ext);
     this.addDependency(themeTplPath);
 
     const scripts = [
-        '/common.js',
-        `/${replaceExt(path.relative(cwd, this.resourcePath), '.js')}`,
+        '../../../common.js',
+        `./${name}.js`
+        // '/common.js',
+        // `/${replaceExt(path.relative(cwd, this.resourcePath), '.js')}`,
     ];
 
     ejs.renderFile(themeTplPath, {
