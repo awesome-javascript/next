@@ -53,6 +53,7 @@ class Demo extends React.Component {
             onItemClick: console.log,
             selectedKeys: this.state.selectedKeys,
             selectMode: 'multiple',
+            rtl: true,
             onSelect: this.handleSelect,
             children: [
                 <Item key="1">Option 1</Item>,
