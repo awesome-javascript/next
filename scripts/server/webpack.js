@@ -22,9 +22,9 @@ module.exports = function getWebpackConfig(options) {
     const themePaths = glob.sync(path.resolve(componentPath, 'theme/**/*.jsx'));
     const entry = getEntry([indexPath, ...demoPaths, ...themePaths], componentName);
     config.entry = entry;
-    console.log(entry);
+
     config.output = {
-        path: `/Users/zhaoguoyan/github/pub/__html/${componentName}`,
+        path: `${cwd}/__html/${componentName}`,
         publicPath: '/',
         filename: '[name].js'
     };
@@ -42,9 +42,9 @@ module.exports = function getWebpackConfig(options) {
     });
     config.module.rules[babelLoaderIndex] = babelLoader;
 
-    let links = getLinks(demoPaths);
+    let links = getLinks(demoPaths, componentName);
     links = [{
-        href: componentName,
+        href: `rtl${componentName}`,
         title: '首页',
         filename: 'index'
     }, {
@@ -70,11 +70,11 @@ module.exports = function getWebpackConfig(options) {
             });
         } else {
             links.push({
-                href: path.relative(docsPath, themePaths[0]).replace(/\.jsx$/, '.html'),
+                href: `rtl/${componentName}/${path.relative(docsPath, themePaths[0]).replace(/\.jsx$/, '.html')}`,
                 title: 'Theme Demo'
             });
             links.push({
-                href: path.relative(docsPath, themePaths[0]).replace(/index\.jsx$/, 'config.html'),
+                href: `rtl/${componentName}/${path.relative(docsPath, themePaths[0]).replace(/index\.jsx$/, 'config.html')}`,
                 title: 'Config Theme Demo'
             });
         }
@@ -142,7 +142,7 @@ function getEntry(entryPaths, componentName) {
     return entry;
 }
 
-function getLinks(demoPaths) {
+function getLinks(demoPaths, componentName) {
     const demoMetas = demoPaths.reduce((ret, demoPath) => {
         const content = fs.readFileSync(demoPath, 'utf8');
         const result = parseMD(content, demoPath);
@@ -163,7 +163,7 @@ function getLinks(demoPaths) {
     }, {});
     const orderedDemoPaths = demoPaths.sort((prev, next) => demoOrders[prev] - demoOrders[next]);
     return orderedDemoPaths.map(demoPath => {
-        const href = path.relative(path.join(cwd, 'docs'), demoPath).replace(/\.md$/, '.html');
+        const href = `rtl/${componentName}/${path.relative(path.join(cwd, 'docs'), demoPath).replace(/\.md$/, '.html')}`;
         let title = (demoMetas[demoPath] || {}).title;
         if (!title) {
             title = path.basename(demoPath, '.md');

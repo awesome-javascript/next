@@ -210,8 +210,9 @@
         var varObj;
         var cssScssMap;
 
+        var cgipath = 'http://10.101.110.155:6001';
         getJson({
-          url: '/getVariables.json',
+          url: cgipath + '/getVariables.json',
           data: {
             componentName: componentName
           },
@@ -332,7 +333,7 @@
           changeCache[element.name] = element.value;
 
           getJson({
-            url: '/rebuildScss.json',
+            url: cgipath + '/rebuildScss.json',
             data: changeCache,
             success: function(result) {
                 console.log(result)

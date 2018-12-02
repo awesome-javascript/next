@@ -24,7 +24,7 @@ module.exports = function(content) {
     const name = path.basename(resourcePath, ext);
 
     const scripts = [
-        '../../../common.js',
+        '../../common.js',
         `./${name}.js`
         // `/${replaceExt(path.relative(cwd, this.resourcePath), '.js')}`
     ];

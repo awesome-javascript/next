@@ -18,7 +18,7 @@ module.exports = function(content) {
     this.addDependency(themeTplPath);
 
     const scripts = [
-        '../../../common.js',
+        '../../common.js',
         `./${name}.js`
         // '/common.js',
         // `/${replaceExt(path.relative(cwd, this.resourcePath), '.js')}`,
